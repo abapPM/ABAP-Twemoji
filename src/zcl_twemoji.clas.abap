@@ -50,6 +50,7 @@ CLASS zcl_twemoji DEFINITION PUBLIC FINAL CREATE PRIVATE.
     METHODS format_twemoji
       IMPORTING
         !line         TYPE string
+        !size         TYPE string OPTIONAL " lg, 2x, 3x, 4x, 5x
       RETURNING
         VALUE(result) TYPE string.
 
@@ -115,10 +116,16 @@ CLASS zcl_twemoji IMPLEMENTATION.
 
     result = line.
 
+    IF size IS INITIAL.
+      DATA(twa) = 'twa'.
+    ELSE.
+      twa = |-{ size }|.
+    ENDIF.
+
     LOOP AT emojis ASSIGNING FIELD-SYMBOL(<emoji>).
       DATA(twemoji) = |:{ <emoji> }:|.
-      DATA(html)  = |<i class="twa twa-{ <emoji> }"></i>|.
-      REPLACE ALL OCCURRENCES OF twemoji IN result WITH html.
+      DATA(html)  = |<i class="{ twa } twa-{ <emoji> }"></i>|.
+      REPLACE ALL OCCURRENCES OF twemoji IN result WITH html IGNORING CASE.
     ENDLOOP.
 
   ENDMETHOD.
