@@ -8,15 +8,15 @@
 REPORT z_twemoji_tester.
 
 SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME.
-  PARAMETERS:
-    p_text TYPE string LOWER CASE DEFAULT 'Twemoji for ABAP made with :red-heart: in Canada :flag-canada:'.
+  PARAMETERS p_text TYPE string LOWER CASE
+    DEFAULT 'Twemoji for ABAP made with :red-heart: in Canada :flag-canada:'.
 SELECTION-SCREEN END OF BLOCK b1.
 
 START-OF-SELECTION.
 
   DATA(emoji) = zcl_twemoji=>create( ).
 
-  data(html) =
+  DATA(html) =
     `<html>` &&
     `<head>` &&
     `<title>Emoji Tester</title>` &&
