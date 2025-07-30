@@ -1,37 +1,39 @@
 {
-  "name": "{{module}}",
+  "name": "twemoji",
   "version": "1.0.0",
-  "description": "{{package}}",
-  "type": "module",
+  "description": "Twmoji for ABAP",
   "keywords": [
     "abap",
     "apm",
-    "module"
+    "emoji",
+    "sap",
+    "tools"
   ],
   "homepage": "https://abappm.com",
   "bugs": {
-    "url": "https://github.com/abapPM/{{repo}}"
+    "url": "https://github.com/abapPM/ABAP-Twemoji/issues"
   },
   "license": "MIT",
   "author": {
     "name": "Marc Bernard",
-    "url": "https://abappm.com"
+    "url": "https://github.com/mbtools",
+    "email": "marc@abappm.com"
   },
   "maintainers": [
     {
       "name": "Marc Bernard",
-      "url": "https://github.com/mbtools"
+      "url": "https://github.com/mbtools",
+      "email": "marc@abappm.com"
     }
   ],
+  "type": "module",
   "repository": {
-    "url": "https://github.com/abapPM/{{repo}}"
+    "type": "git",
+    "url": "git+https://github.com/abapPM/ABAP-Twemoji.git"
   },
   "funding": {
     "type": "github",
-    "url": "https://github.com/sponsors/abapPM"
-  },
-  "dependencies": {
-    "error": "^1.0.0"
+    "url": "https://github.com/sponsors/abappm"
   },
   "engines": {
     "abap": ">=7.50",
