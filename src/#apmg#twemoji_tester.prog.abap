@@ -20,7 +20,7 @@ START-OF-SELECTION.
     `<html>` &&
     `<head>` &&
     `<title>Emoji Tester</title>` &&
-    `<style>` && concat_lines_of( emoji->get_twemoji_css( ) ) && `</style>` &&
+    `<style>` && concat_lines_of( emoji->get_twemoji_styles( ) ) && `</style>` &&
     `</head>` &&
     `<body>` && emoji->format_twemoji( p_text ) && `</body>` &&
     `</html>`.

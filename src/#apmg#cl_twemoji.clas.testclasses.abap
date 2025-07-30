@@ -6,7 +6,7 @@ CLASS ltcl_test DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT FINAL.
     METHODS setup.
     METHODS twemoji_find FOR TESTING.
     METHODS twemoji_format FOR TESTING.
-    METHODS twemoji_css FOR TESTING.
+    METHODS twemoji_styles FOR TESTING.
     METHODS twemoji_list FOR TESTING.
 
 ENDCLASS.
@@ -33,8 +33,8 @@ CLASS ltcl_test IMPLEMENTATION.
       exp = 'Here are some <i class="twa twa-sparkles"></i>' ).
   ENDMETHOD.
 
-  METHOD twemoji_css.
-    DATA(css) = cut->get_twemoji_css( ).
+  METHOD twemoji_styles.
+    DATA(css) = cut->get_twemoji_styles( ).
 
     cl_aunit_assert=>assert_not_initial( css ).
   ENDMETHOD.

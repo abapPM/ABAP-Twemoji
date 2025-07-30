@@ -18,9 +18,9 @@ CLASS /apmg/cl_twemoji DEFINITION
 * Macros: CSS for Twemoji
 *
 * Location of emoji images:
-* https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets
+* https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets
 ************************************************************************
-* TODO: Update list and CSS to v15.1
+* TODO: Update list and CSS to v16
 ************************************************************************
   PUBLIC SECTION.
 
@@ -36,7 +36,7 @@ CLASS /apmg/cl_twemoji DEFINITION
 
     METHODS constructor.
 
-    METHODS get_twemoji_css
+    METHODS get_twemoji_styles
       RETURNING
         VALUE(result) TYPE ty_code.
 
@@ -60,7 +60,7 @@ CLASS /apmg/cl_twemoji DEFINITION
   PROTECTED SECTION.
   PRIVATE SECTION.
 
-    CONSTANTS c_base_url TYPE string VALUE 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets'.
+    CONSTANTS c_base_url TYPE string VALUE 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets'.
 
     CLASS-DATA twemoji TYPE REF TO /apmg/cl_twemoji.
 
@@ -72,7 +72,7 @@ CLASS /apmg/cl_twemoji DEFINITION
       RETURNING
         VALUE(result) TYPE program.
 
-    METHODS get_program_for_twemoji_css
+    METHODS get_program_for_twemoji_styles
       RETURNING
         VALUE(result) TYPE program.
 
@@ -134,16 +134,6 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_program_for_twemoji_css.
-
-    DATA(descr) = cl_abap_classdescr=>get_class_name( me ).
-    DATA(class) = CONV seoclsname( descr+7(*) ).
-
-    result = cl_oo_classname_service=>get_ccmac_name( class ).
-
-  ENDMETHOD.
-
-
   METHOD get_program_for_twemoji_list.
 
     DATA(descr) = cl_abap_classdescr=>get_class_name( me ).
@@ -154,11 +144,28 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD get_twemoji_css.
+  METHOD get_program_for_twemoji_styles.
+
+    DATA(descr) = cl_abap_classdescr=>get_class_name( me ).
+    DATA(class) = CONV seoclsname( descr+7(*) ).
+
+    result = cl_oo_classname_service=>get_ccmac_name( class ).
+
+  ENDMETHOD.
+
+
+  METHOD get_twemoji_list.
+
+    result = emojis.
+
+  ENDMETHOD.
+
+
+  METHOD get_twemoji_styles.
 
     DATA code TYPE ty_code.
 
-    DATA(program) = get_program_for_twemoji_css( ).
+    DATA(program) = get_program_for_twemoji_styles( ).
 
     READ REPORT program INTO code STATE 'A'.
     ASSERT sy-subrc = 0.
@@ -172,13 +179,6 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
     ENDLOOP.
 
     REPLACE ALL OCCURRENCES OF '"@/' IN TABLE result WITH |"{ c_base_url }/|.
-
-  ENDMETHOD.
-
-
-  METHOD get_twemoji_list.
-
-    result = emojis.
 
   ENDMETHOD.
 
