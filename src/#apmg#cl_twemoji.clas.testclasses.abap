@@ -1,18 +1,12 @@
-************************************************************************
-* ABAP Twemoji
-*
-* Copyright 2024 apm.to Inc. <https://apm.to>
-* SPDX-License-Identifier: MIT
-************************************************************************
 CLASS ltcl_test DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT FINAL.
 
   PRIVATE SECTION.
-    DATA cut TYPE REF TO zcl_twemoji.
+    DATA cut TYPE REF TO /apmg/cl_twemoji.
 
     METHODS setup.
     METHODS twemoji_find FOR TESTING.
     METHODS twemoji_format FOR TESTING.
-    METHODS twemoji_css FOR TESTING.
+    METHODS twemoji_styles FOR TESTING.
     METHODS twemoji_list FOR TESTING.
 
 ENDCLASS.
@@ -20,7 +14,7 @@ ENDCLASS.
 CLASS ltcl_test IMPLEMENTATION.
 
   METHOD setup.
-    cut = zcl_twemoji=>create( ).
+    cut = /apmg/cl_twemoji=>create( ).
   ENDMETHOD.
 
   METHOD twemoji_find.
@@ -39,8 +33,8 @@ CLASS ltcl_test IMPLEMENTATION.
       exp = 'Here are some <i class="twa twa-sparkles"></i>' ).
   ENDMETHOD.
 
-  METHOD twemoji_css.
-    DATA(css) = cut->get_twemoji_css( ).
+  METHOD twemoji_styles.
+    DATA(css) = cut->get_twemoji_styles( ).
 
     cl_aunit_assert=>assert_not_initial( css ).
   ENDMETHOD.

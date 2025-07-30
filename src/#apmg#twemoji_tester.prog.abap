@@ -5,7 +5,7 @@
 * SPDX-License-Identifier: MIT
 ********************************************************************************
 
-REPORT z_twemoji_tester.
+REPORT /apmg/twemoji_tester.
 
 SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME.
   PARAMETERS p_text TYPE string LOWER CASE
@@ -14,13 +14,13 @@ SELECTION-SCREEN END OF BLOCK b1.
 
 START-OF-SELECTION.
 
-  DATA(emoji) = zcl_twemoji=>create( ).
+  DATA(emoji) = /apmg/cl_twemoji=>create( ).
 
   DATA(html) =
     `<html>` &&
     `<head>` &&
     `<title>Emoji Tester</title>` &&
-    `<style>` && concat_lines_of( emoji->get_twemoji_css( ) ) && `</style>` &&
+    `<style>` && concat_lines_of( emoji->get_twemoji_styles( ) ) && `</style>` &&
     `</head>` &&
     `<body>` && emoji->format_twemoji( p_text ) && `</body>` &&
     `</html>`.
