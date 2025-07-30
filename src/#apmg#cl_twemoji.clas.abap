@@ -1,4 +1,7 @@
-CLASS zcl_twemoji DEFINITION PUBLIC FINAL CREATE PRIVATE.
+CLASS /apmg/cl_twemoji DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE.
 
 ************************************************************************
 * ABAP Twemoji
@@ -29,7 +32,7 @@ CLASS zcl_twemoji DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
     CLASS-METHODS create
       RETURNING
-        VALUE(result) TYPE REF TO zcl_twemoji.
+        VALUE(result) TYPE REF TO /apmg/cl_twemoji.
 
     METHODS constructor.
 
@@ -59,7 +62,7 @@ CLASS zcl_twemoji DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
     CONSTANTS c_base_url TYPE string VALUE 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets'.
 
-    CLASS-DATA twemoji TYPE REF TO zcl_twemoji.
+    CLASS-DATA twemoji TYPE REF TO /apmg/cl_twemoji.
 
     DATA emojis TYPE HASHED TABLE OF string WITH UNIQUE KEY table_line.
 
@@ -77,7 +80,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_twemoji IMPLEMENTATION.
+CLASS /apmg/cl_twemoji IMPLEMENTATION.
 
 
   METHOD constructor.

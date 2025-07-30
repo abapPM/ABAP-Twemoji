@@ -1,13 +1,7 @@
-************************************************************************
-* ABAP Twemoji
-*
-* Copyright 2024 apm.to Inc. <https://apm.to>
-* SPDX-License-Identifier: MIT
-************************************************************************
 CLASS ltcl_test DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT FINAL.
 
   PRIVATE SECTION.
-    DATA cut TYPE REF TO zcl_twemoji.
+    DATA cut TYPE REF TO /apmg/cl_twemoji.
 
     METHODS setup.
     METHODS twemoji_find FOR TESTING.
@@ -20,7 +14,7 @@ ENDCLASS.
 CLASS ltcl_test IMPLEMENTATION.
 
   METHOD setup.
-    cut = zcl_twemoji=>create( ).
+    cut = /apmg/cl_twemoji=>create( ).
   ENDMETHOD.
 
   METHOD twemoji_find.
