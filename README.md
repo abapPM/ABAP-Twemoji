@@ -34,7 +34,7 @@ data(css) = emoji->styles( ).
 Find emojis with regex:
 
 ```abap
-data(list) = emoji->find( '^red-heart$' ).
+data(list) = emoji->search( '^red-heart$' ).
 ```
 
 Format any text:

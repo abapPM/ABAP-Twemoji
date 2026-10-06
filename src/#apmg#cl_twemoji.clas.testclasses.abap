@@ -4,7 +4,7 @@ CLASS ltcl_test DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT FINAL.
     DATA cut TYPE REF TO /apmg/cl_twemoji.
 
     METHODS setup.
-    METHODS twemoji_find FOR TESTING.
+    METHODS twemoji_search FOR TESTING.
     METHODS twemoji_format FOR TESTING.
     METHODS twemoji_styles FOR TESTING.
     METHODS twemoji_list FOR TESTING.
@@ -17,8 +17,8 @@ CLASS ltcl_test IMPLEMENTATION.
     cut = /apmg/cl_twemoji=>create( ).
   ENDMETHOD.
 
-  METHOD twemoji_find.
-    DATA(emojis) = cut->find( '^sparkles$' ).
+  METHOD twemoji_search.
+    DATA(emojis) = cut->search( '^sparkles$' ).
 
     cl_aunit_assert=>assert_equals(
       act = lines( emojis )

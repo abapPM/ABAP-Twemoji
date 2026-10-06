@@ -44,7 +44,7 @@ CLASS /apmg/cl_twemoji DEFINITION
       RETURNING
         VALUE(result) TYPE ty_code.
 
-    METHODS find
+    METHODS search
       IMPORTING
         !regex        TYPE csequence
       RETURNING
@@ -97,18 +97,6 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
     ENDIF.
 
     result = twemoji.
-
-  ENDMETHOD.
-
-
-  METHOD find.
-
-    LOOP AT emojis ASSIGNING FIELD-SYMBOL(<emoji>).
-      FIND REGEX regex IN <emoji> IGNORING CASE ##REGEX_POSIX.
-      IF sy-subrc = 0.
-        INSERT <emoji> INTO TABLE result.
-      ENDIF.
-    ENDLOOP.
 
   ENDMETHOD.
 
@@ -176,6 +164,18 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
 
     LOOP AT code ASSIGNING FIELD-SYMBOL(<line>) WHERE table_line CP '" *'.
       INSERT <line>+2(*) INTO TABLE emojis.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD search.
+
+    LOOP AT emojis ASSIGNING FIELD-SYMBOL(<emoji>).
+      FIND REGEX regex IN <emoji> IGNORING CASE ##REGEX_POSIX.
+      IF sy-subrc = 0.
+        INSERT <emoji> INTO TABLE result.
+      ENDIF.
     ENDLOOP.
 
   ENDMETHOD.
