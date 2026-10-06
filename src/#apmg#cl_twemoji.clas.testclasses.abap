@@ -18,7 +18,7 @@ CLASS ltcl_test IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD twemoji_find.
-    DATA(emojis) = cut->find_twemoji( '^sparkles$' ).
+    DATA(emojis) = cut->find( '^sparkles$' ).
 
     cl_aunit_assert=>assert_equals(
       act = lines( emojis )
@@ -26,7 +26,7 @@ CLASS ltcl_test IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD twemoji_format.
-    DATA(html) = cut->format_twemoji( 'Here are some :sparkles:' ).
+    DATA(html) = cut->format( 'Here are some :sparkles:' ).
 
     cl_aunit_assert=>assert_equals(
       act = html
@@ -34,13 +34,13 @@ CLASS ltcl_test IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD twemoji_styles.
-    DATA(css) = cut->get_twemoji_styles( ).
+    DATA(css) = cut->styles( ).
 
     cl_aunit_assert=>assert_not_initial( css ).
   ENDMETHOD.
 
   METHOD twemoji_list.
-    DATA(emojis) = cut->get_twemoji_list( ).
+    DATA(emojis) = cut->get_list( ).
 
     cl_aunit_assert=>assert_not_initial( emojis ).
   ENDMETHOD.

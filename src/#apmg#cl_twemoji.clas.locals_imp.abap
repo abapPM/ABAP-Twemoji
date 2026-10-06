@@ -1,7 +1,7 @@
 ************************************************************************
 * ABAP Twemoji
 *
-* Copyright 2024 apm.to Inc. <https://apm.to>
+* Copyright 2026 apm.to Inc. <https://apm.to>
 * SPDX-License-Identifier: MIT
 ************************************************************************
 

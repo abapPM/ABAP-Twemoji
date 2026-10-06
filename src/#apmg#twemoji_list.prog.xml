@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>/APMG/TWEMOJI_TESTER</NAME>
+    <NAME>/APMG/TWEMOJI_LIST</NAME>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
@@ -13,7 +13,7 @@
     <item>
      <ID>I</ID>
      <KEY>T01</KEY>
-     <ENTRY>Twemoji Text</ENTRY>
+     <ENTRY>Twemoji Filter</ENTRY>
      <LENGTH>50</LENGTH>
     </item>
     <item>
@@ -24,8 +24,8 @@
     </item>
     <item>
      <ID>R</ID>
-     <ENTRY>Twemoji Tester</ENTRY>
-     <LENGTH>14</LENGTH>
+     <ENTRY>Twemoji List</ENTRY>
+     <LENGTH>12</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -43,7 +43,7 @@
      <ID>S</ID>
      <KEY>P_4X</KEY>
      <ENTRY>4x</ENTRY>
-     <LENGTH>10</LENGTH>
+     <LENGTH>11</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -59,15 +59,15 @@
     </item>
     <item>
      <ID>S</ID>
-     <KEY>P_SIZE</KEY>
-     <ENTRY>Regular</ENTRY>
-     <LENGTH>15</LENGTH>
+     <KEY>P_REGEX</KEY>
+     <ENTRY>Twemoji name (regex)</ENTRY>
+     <LENGTH>28</LENGTH>
     </item>
     <item>
      <ID>S</ID>
-     <KEY>P_TEXT</KEY>
-     <ENTRY>Some text with emoji</ENTRY>
-     <LENGTH>28</LENGTH>
+     <KEY>P_SIZE</KEY>
+     <ENTRY>Regular</ENTRY>
+     <LENGTH>15</LENGTH>
     </item>
    </TPOOL>
   </asx:values>

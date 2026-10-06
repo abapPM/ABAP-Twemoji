@@ -1,15 +1,14 @@
 ********************************************************************************
-* Twemoji Tester
+* Twemoji List
 *
 * Copyright 2026 apm.to Inc. <https://apm.to>
 * SPDX-License-Identifier: MIT
 ********************************************************************************
 
-REPORT /apmg/twemoji_tester.
+REPORT /apmg/twemoji_list.
 
 SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-t01.
-  PARAMETERS p_text TYPE string LOWER CASE
-    DEFAULT 'Twemoji for ABAP made with :red-heart: in Canada :flag-canada:'.
+  PARAMETERS p_regex TYPE string LOWER CASE DEFAULT 'face'.
 SELECTION-SCREEN END OF BLOCK b1.
 
 SELECTION-SCREEN BEGIN OF BLOCK b2 WITH FRAME TITLE TEXT-t02.
@@ -48,10 +47,35 @@ START-OF-SELECTION.
     `<title>Emoji Tester</title>` &&
     `<style>` && emoji->styles( ) && `</style>` &&
     `</head>` &&
-    `<body>` && emoji->format( line = p_text size = size ) && `</body>` &&
-    `</html>`.
+    `<body>`.
+
+  DATA(list) = emoji->get_list( ).
+
+  html = html && |<h1>Twemoji List ({ lines( list ) } emoji)</h1>|.
+
+
+  DATA(count) = 0.
+
+  " TODO: Format this as a nice table
+  LOOP AT list ASSIGNING FIELD-SYMBOL(<emoji>).
+    IF p_regex IS NOT INITIAL.
+      FIND REGEX p_regex IN <emoji> ##REGEX_POSIX.
+      IF sy-subrc <> 0.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    DATA(tag) = |:{ <emoji> }:|.
+    html = html && emoji->format( line = tag size = size ) && |  { tag }|.
+    html = html && '<br><div style="height:3px;"></div>'.
+    count = count + 1.
+  ENDLOOP.
+
+  html = html && |<h2>{ count } twemoji selected</h2>|.
+
+  html = html && `</html>`.
 
   cl_abap_browser=>show_html(
-    title       = 'Twemoji Tester'
+    title       = 'Twemoji List'
     dialog      = abap_false
     html_string = html ).

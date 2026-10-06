@@ -9,7 +9,7 @@ CLASS /apmg/cl_twemoji DEFINITION
 * Support for Twemoji v14.0
 * https://github.com/jdecked/twemoji
 *
-* Copyright 2024 apm.to Inc. <https://apm.to>
+* Copyright 2026 apm.to Inc. <https://apm.to>
 * SPDX-License-Identifier: MIT
 ************************************************************************
 * Source locations used for twemoji data:
@@ -28,7 +28,7 @@ CLASS /apmg/cl_twemoji DEFINITION
       ty_code    TYPE string_table,
       ty_results TYPE SORTED TABLE OF string WITH UNIQUE KEY table_line.
 
-    CONSTANTS c_version TYPE string VALUE '1.5.0' ##NEEDED.
+    CONSTANTS c_version TYPE string VALUE '2.0.0' ##NEEDED.
 
     CLASS-METHODS create
       RETURNING
@@ -36,24 +36,24 @@ CLASS /apmg/cl_twemoji DEFINITION
 
     METHODS constructor.
 
-    METHODS get_twemoji_styles
+    METHODS styles
+      RETURNING
+        VALUE(result) TYPE string.
+
+    METHODS get_list
       RETURNING
         VALUE(result) TYPE ty_code.
 
-    METHODS get_twemoji_list
-      RETURNING
-        VALUE(result) TYPE ty_code.
-
-    METHODS find_twemoji
+    METHODS find
       IMPORTING
-        !regex        TYPE string
+        !regex        TYPE csequence
       RETURNING
         VALUE(result) TYPE ty_results.
 
-    METHODS format_twemoji
+    METHODS format
       IMPORTING
-        !line         TYPE string
-        !size         TYPE string OPTIONAL " lg, 2x, 3x, 4x, 5x
+        !line         TYPE csequence
+        !size         TYPE csequence OPTIONAL " lg, 2x, 3x, 4x, 5x
       RETURNING
         VALUE(result) TYPE string.
 
@@ -101,13 +101,11 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD find_twemoji.
+  METHOD find.
 
     LOOP AT emojis ASSIGNING FIELD-SYMBOL(<emoji>).
-      IF find(
-           val   = <emoji>
-           regex = regex
-           case  = abap_false ) >= 0.
+      FIND REGEX regex IN <emoji> IGNORING CASE ##REGEX_POSIX.
+      IF sy-subrc = 0.
         INSERT <emoji> INTO TABLE result.
       ENDIF.
     ENDLOOP.
@@ -115,27 +113,37 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD format_twemoji.
+  METHOD format.
 
     result = line.
 
-    IF size IS INITIAL.
-      DATA(twa) = 'twa'.
-    ELSE.
-      twa = |-{ size }|.
+    IF size IS NOT INITIAL.
+      IF size <> 'lg' AND size <> '2x' AND size <> '3x' AND size <> '4x' AND size <> '5x'.
+        result = 'Invalid size (lg, 2x, 3x, 4x, 5x)'.
+        RETURN.
+      ENDIF.
+      DATA(twa_size) = | twa-{ size }|.
     ENDIF.
 
     LOOP AT emojis ASSIGNING FIELD-SYMBOL(<emoji>).
       DATA(twemoji) = |:{ <emoji> }:|.
-      DATA(html)  = |<i class="{ twa } twa-{ <emoji> }"></i>|.
+      DATA(html)  = |<i class="twa{ twa_size } twa-{ <emoji> }"></i>|.
       REPLACE ALL OCCURRENCES OF twemoji IN result WITH html IGNORING CASE.
     ENDLOOP.
 
   ENDMETHOD.
 
 
+  METHOD get_list.
+
+    result = emojis.
+
+  ENDMETHOD.
+
+
   METHOD get_program_for_twemoji_list.
 
+    " Local implementations of this class
     DATA(descr) = cl_abap_classdescr=>get_class_name( me ).
     DATA(class) = CONV seoclsname( descr+7(*) ).
 
@@ -146,39 +154,11 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
 
   METHOD get_program_for_twemoji_styles.
 
+    " Macro include of this class
     DATA(descr) = cl_abap_classdescr=>get_class_name( me ).
     DATA(class) = CONV seoclsname( descr+7(*) ).
 
     result = cl_oo_classname_service=>get_ccmac_name( class ).
-
-  ENDMETHOD.
-
-
-  METHOD get_twemoji_list.
-
-    result = emojis.
-
-  ENDMETHOD.
-
-
-  METHOD get_twemoji_styles.
-
-    DATA code TYPE ty_code.
-
-    DATA(program) = get_program_for_twemoji_styles( ).
-
-    READ REPORT program INTO code STATE 'A'.
-    ASSERT sy-subrc = 0.
-
-    LOOP AT code ASSIGNING FIELD-SYMBOL(<line>).
-      IF strlen( <line> ) > 2.
-        INSERT <line>+2(*) INTO TABLE result.
-      ELSE.
-        INSERT `` INTO TABLE result.
-      ENDIF.
-    ENDLOOP.
-
-    REPLACE ALL OCCURRENCES OF '"@/' IN TABLE result WITH |"{ c_base_url }/|.
 
   ENDMETHOD.
 
@@ -197,6 +177,33 @@ CLASS /apmg/cl_twemoji IMPLEMENTATION.
     LOOP AT code ASSIGNING FIELD-SYMBOL(<line>) WHERE table_line CP '" *'.
       INSERT <line>+2(*) INTO TABLE emojis.
     ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD styles.
+
+    DATA code TYPE ty_code.
+    DATA style_tab TYPE string_table.
+
+    DATA(program) = get_program_for_twemoji_styles( ).
+
+    READ REPORT program INTO code STATE 'A'.
+    ASSERT sy-subrc = 0.
+
+    LOOP AT code ASSIGNING FIELD-SYMBOL(<line>).
+      IF strlen( <line> ) > 2.
+        INSERT <line>+2(*) INTO TABLE style_tab.
+      ELSE.
+        INSERT `` INTO TABLE style_tab.
+      ENDIF.
+    ENDLOOP.
+
+    REPLACE ALL OCCURRENCES OF '"@/' IN TABLE style_tab WITH |"{ c_base_url }/|.
+
+    result = concat_lines_of(
+      table = style_tab
+      sep   = |\n| ).
 
   ENDMETHOD.
 ENDCLASS.

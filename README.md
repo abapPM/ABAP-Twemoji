@@ -12,6 +12,8 @@ Currently supports Twemoji v14.0
 
 Based on [Twemoji](https://github.com/jdecked/twemoji) and [Twemoji-Amazing](https://github.com/SebastianAigner/twemoji-amazing) with assets located at `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets`.
 
+Twemoji are in SVG format. If you looking for emoji in PNG format, check out [ABAP Emoji](https://registry.abappm.com/emoji).
+
 NO WARRANTIES, [MIT License](LICENSE)
 
 ## Prerequisite
@@ -26,25 +28,33 @@ Get CSS for the emoji class:
 
 ```abap
 data(emoji) = /apmg/cl_twemoji=>create( ).
-data(css) = emoji->get_twemoji_styles( ).
+data(css) = emoji->styles( ).
 ```
 
 Find emojis with regex:
 
 ```abap
-data(list) = emoji->find_twemoji( '^red-heart$' ).
+data(list) = emoji->find( '^red-heart$' ).
 ```
 
 Format any text:
 
 ```abap
-write emoji->format_twemoji( 'I :red-heart: ABAP' ).
+write emoji->format( 'I :red-heart: ABAP' ).
 ```
 
 I ❤ ABAP
 
 ```html
 I <i class="twa twa-red-heart"></i> ABAP
+```
+
+Optionally, get the emoji in larger sizes: `lg`, `2x`, `3x`, `4x`, or `5x`.
+
+```abap
+write emoji->format( 
+  line = 'Party! :partying-face:' 
+  size = '3x' ).
 ```
 
 ## Installation
